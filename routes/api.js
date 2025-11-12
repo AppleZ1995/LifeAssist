@@ -112,4 +112,36 @@ router.delete('/v1/courses/:id', function(req, res, next) {
   });
 });
 
+// GET - Dashboard statistics
+router.get('/v1/dashboard', function(req, res, next) {
+  db.get('SELECT COUNT(*) as totalCourses FROM courses', (err, coursesCount) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    db.get('SELECT COUNT(*) as totalUsers FROM users', (err, usersCount) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      // Get courses by instructor
+      db.all('SELECT instructor, COUNT(*) as count FROM courses WHERE instructor IS NOT NULL GROUP BY instructor', 
+        (err, coursesByInstructor) => {
+          if (err) return res.status(500).json({ error: err.message });
+
+          // Get age distribution
+          db.all('SELECT CASE WHEN age < 18 THEN "Under 18" WHEN age < 30 THEN "18-29" WHEN age < 40 THEN "30-39" WHEN age < 50 THEN "40-49" ELSE "50+" END as ageGroup, COUNT(*) as count FROM users WHERE age IS NOT NULL GROUP BY ageGroup', 
+            (err, ageDistribution) => {
+              if (err) return res.status(500).json({ error: err.message });
+
+              res.json({
+                totalCourses: coursesCount.totalCourses,
+                totalUsers: usersCount.totalUsers,
+                coursesByInstructor: coursesByInstructor || [],
+                ageDistribution: ageDistribution || []
+              });
+            }
+          );
+        }
+      );
+    });
+  });
+});
+
 module.exports = router;

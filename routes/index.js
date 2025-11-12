@@ -11,4 +11,9 @@ router.get('/courses', function(req, res, next) {
   res.render('courses');
 });
 
+/* GET dashboard page. */
+router.get('/dashboard', function(req, res, next) {
+  res.render('dashboard');
+});
+
 module.exports = router;

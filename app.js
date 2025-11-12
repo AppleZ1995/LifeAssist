@@ -32,6 +32,10 @@ app.use(
   "/bootstrap",
   express.static(path.join(__dirname, "node_modules/bootstrap/dist"))
 );
+app.use(
+  "/chartjs",
+  express.static(path.join(__dirname, "node_modules/chart.js/dist"))
+);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
