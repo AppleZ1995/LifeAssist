@@ -1,383 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - LifeAssist</title>
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        body { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px 0;
-        }
-        .navbar { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            border-left: 5px solid #667eea;
-        }
-        .stat-card h3 {
-            color: #667eea;
-            font-weight: bold;
-            margin: 0;
-        }
-        .stat-card .number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #333;
-            margin-top: 10px;
-        }
-        .chart-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            position: relative;
-            height: 400px;
-        }
-        .chart-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-        .spinner-border {
-            color: #667eea;
-        }
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px 0;
+      }
+      .navbar {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .stat-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        border-left: 5px solid #667eea;
+      }
+      .stat-card h3 {
+        color: #667eea;
+        font-weight: bold;
+        margin: 0;
+      }
+      .stat-card .number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 10px;
+      }
+      .chart-container {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        position: relative;
+        height: 400px;
+      }
+      .chart-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #667eea;
+      }
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      .spinner-border {
+        color: #667eea;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">LifeAssist</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/dashboard">Dashboard</a></li>
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">LifeAssist</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="/courses">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/dashboard">Dashboard</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <div class="container mt-5">
-        <h1 class="text-white mb-5">📊 Dashboard</h1>
+      <h1 class="text-white mb-5">📊 Dashboard</h1>
 
-        <!-- Statistics Cards -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="stat-card">
-                    <h3>📚 Total Courses</h3>
-                    <div class="number" id="totalCourses">-</div>
-                </div>
+      <!-- Statistics Cards -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="stat-card">
+            <h3>📚 Total Courses</h3>
+            <div class="number" id="totalCourses">-</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stat-card">
+            <h3>👥 Total Users</h3>
+            <div class="number" id="totalUsers">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="row">
+        <!-- Bar Chart -->
+        <div class="col-lg-6">
+          <div class="chart-container">
+            <div class="chart-title">📊 Courses by Instructor</div>
+            <div id="barChartLoading" class="loading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
-            <div class="col-md-6">
-                <div class="stat-card">
-                    <h3>👥 Total Users</h3>
-                    <div class="number" id="totalUsers">-</div>
-                </div>
-            </div>
+            <canvas id="barChart" style="display: none"></canvas>
+          </div>
         </div>
 
-        <!-- Charts -->
-        <div class="row">
-            <!-- Bar Chart -->
-            <div class="col-lg-6">
-                <div class="chart-container">
-                    <div class="chart-title">📊 Courses by Instructor</div>
-                    <div id="barChartLoading" class="loading">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <canvas id="barChart" style="display: none;"></canvas>
-                </div>
+        <!-- Pie Chart -->
+        <div class="col-lg-6">
+          <div class="chart-container">
+            <div class="chart-title">🎂 Age Distribution</div>
+            <div id="pieChartLoading" class="loading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
+            <canvas id="pieChart" style="display: none"></canvas>
+          </div>
+        </div>
+      </div>
 
-            <!-- Pie Chart -->
-            <div class="col-lg-6">
-                <div class="chart-container">
-                    <div class="chart-title">🎂 Age Distribution</div>
-                    <div id="pieChartLoading" class="loading">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <canvas id="pieChart" style="display: none;"></canvas>
-                </div>
+      <!-- Line Chart -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="chart-container" style="height: 350px">
+            <div class="chart-title">📈 Course Growth Trend</div>
+            <div id="lineChartLoading" class="loading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
+            <canvas id="lineChart" style="display: none"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doughnut Chart -->
+      <div class="row mt-4 mb-5">
+        <div class="col-lg-6">
+          <div class="chart-container">
+            <div class="chart-title">🍩 User Distribution</div>
+            <div id="doughnutChartLoading" class="loading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            <canvas id="doughnutChart" style="display: none"></canvas>
+          </div>
         </div>
 
-        <!-- Line Chart -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="chart-container" style="height: 350px;">
-                    <div class="chart-title">📈 Course Growth Trend</div>
-                    <div id="lineChartLoading" class="loading">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <canvas id="lineChart" style="display: none;"></canvas>
-                </div>
+        <!-- Radar Chart -->
+        <div class="col-lg-6">
+          <div class="chart-container">
+            <div class="chart-title">🎯 Performance Metrics</div>
+            <div id="radarChartLoading" class="loading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
+            <canvas id="radarChart" style="display: none"></canvas>
+          </div>
         </div>
-
-        <!-- Doughnut Chart -->
-        <div class="row mt-4 mb-5">
-            <div class="col-lg-6">
-                <div class="chart-container">
-                    <div class="chart-title">🍩 User Distribution</div>
-                    <div id="doughnutChartLoading" class="loading">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <canvas id="doughnutChart" style="display: none;"></canvas>
-                </div>
-            </div>
-
-            <!-- Radar Chart -->
-            <div class="col-lg-6">
-                <div class="chart-container">
-                    <div class="chart-title">🎯 Performance Metrics</div>
-                    <div id="radarChartLoading" class="loading">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <canvas id="radarChart" style="display: none;"></canvas>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/chartjs/chart.umd.js"></script>
 
     <script>
-        let charts = {};
+      let charts = {};
 
-        // Load dashboard data on page load
-        document.addEventListener('DOMContentLoaded', () => loadDashboardData());
+      // Load dashboard data on page load
+      document.addEventListener("DOMContentLoaded", () => loadDashboardData());
 
-        function loadDashboardData() {
-            fetch('/api/v1/dashboard')
-                .then(res => res.json())
-                .then(data => {
-                    // Update statistics
-                    document.getElementById('totalCourses').textContent = data.totalCourses;
-                    document.getElementById('totalUsers').textContent = data.totalUsers;
+      function loadDashboardData() {
+        fetch("/api/v1/dashboard")
+          .then((res) => res.json())
+          .then((data) => {
+            // Update statistics
+            document.getElementById("totalCourses").textContent =
+              data.totalCourses;
+            document.getElementById("totalUsers").textContent = data.totalUsers;
 
-                    // Initialize charts
-                    initBarChart(data.coursesByInstructor);
-                    initPieChart(data.ageDistribution);
-                    initLineChart();
-                    initDoughnutChart(data);
-                    initRadarChart();
-                })
-                .catch(err => {
-                    console.error('Error loading dashboard:', err);
-                    alert('Error loading dashboard data');
-                });
-        }
+            // Initialize charts
+            initBarChart(data.coursesByInstructor);
+            initPieChart(data.ageDistribution);
+            initLineChart();
+            initDoughnutChart(data);
+            initRadarChart();
+          })
+          .catch((err) => {
+            console.error("Error loading dashboard:", err);
+            alert("Error loading dashboard data");
+          });
+      }
 
-        // Bar Chart - Courses by Instructor
-        function initBarChart(data) {
-            const ctx = document.getElementById('barChart').getContext('2d');
-            
-            const labels = data.map(d => d.instructor || 'Unknown');
-            const counts = data.map(d => d.count);
+      // Bar Chart - Courses by Instructor
+      function initBarChart(data) {
+        const ctx = document.getElementById("barChart").getContext("2d");
 
-            hideLoading('barChartLoading');
-            document.getElementById('barChart').style.display = 'block';
+        const labels = data.map((d) => d.instructor || "Unknown");
+        const counts = data.map((d) => d.count);
 
-            charts.bar = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels.length > 0 ? labels : ['No Data'],
-                    datasets: [{
-                        label: 'Number of Courses',
-                        data: counts.length > 0 ? counts : [0],
-                        backgroundColor: [
-                            '#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'
-                        ],
-                        borderColor: '#667eea',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: true, position: 'top' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        }
+        hideLoading("barChartLoading");
+        document.getElementById("barChart").style.display = "block";
 
-        // Pie Chart - Age Distribution
-        function initPieChart(data) {
-            const ctx = document.getElementById('pieChart').getContext('2d');
-            
-            const labels = data.map(d => d.ageGroup || 'Unknown');
-            const counts = data.map(d => d.count);
+        charts.bar = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels.length > 0 ? labels : ["No Data"],
+            datasets: [
+              {
+                label: "Number of Courses",
+                data: counts.length > 0 ? counts : [0],
+                backgroundColor: [
+                  "#667eea",
+                  "#764ba2",
+                  "#f093fb",
+                  "#4facfe",
+                  "#00f2fe",
+                ],
+                borderColor: "#667eea",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: true, position: "top" },
+            },
+            scales: {
+              y: { beginAtZero: true },
+            },
+          },
+        });
+      }
 
-            hideLoading('pieChartLoading');
-            document.getElementById('pieChart').style.display = 'block';
+      // Pie Chart - Age Distribution
+      function initPieChart(data) {
+        const ctx = document.getElementById("pieChart").getContext("2d");
 
-            charts.pie = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels.length > 0 ? labels : ['No Data'],
-                    datasets: [{
-                        data: counts.length > 0 ? counts : [1],
-                        backgroundColor: [
-                            '#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
-            });
-        }
+        const labels = data.map((d) => d.ageGroup || "Unknown");
+        const counts = data.map((d) => d.count);
 
-        // Line Chart - Course Growth Trend
-        function initLineChart() {
-            const ctx = document.getElementById('lineChart').getContext('2d');
+        hideLoading("pieChartLoading");
+        document.getElementById("pieChart").style.display = "block";
 
-            hideLoading('lineChartLoading');
-            document.getElementById('lineChart').style.display = 'block';
+        charts.pie = new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: labels.length > 0 ? labels : ["No Data"],
+            datasets: [
+              {
+                data: counts.length > 0 ? counts : [1],
+                backgroundColor: [
+                  "#667eea",
+                  "#764ba2",
+                  "#f093fb",
+                  "#4facfe",
+                  "#00f2fe",
+                ],
+                borderWidth: 2,
+                borderColor: "#fff",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom" },
+            },
+          },
+        });
+      }
 
-            charts.line = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                        label: 'Course Growth',
-                        data: [5, 8, 12, 15, 18, 20, 22, 25, 28, 30, 32, 35],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#667eea',
-                        pointHoverBackgroundColor: '#764ba2'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: true, position: 'top' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        }
+      // Line Chart - Course Growth Trend
+      function initLineChart() {
+        const ctx = document.getElementById("lineChart").getContext("2d");
 
-        // Doughnut Chart
-        function initDoughnutChart(data) {
-            const ctx = document.getElementById('doughnutChart').getContext('2d');
+        hideLoading("lineChartLoading");
+        document.getElementById("lineChart").style.display = "block";
 
-            hideLoading('doughnutChartLoading');
-            document.getElementById('doughnutChart').style.display = 'block';
+        charts.line = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: "Course Growth",
+                data: [5, 8, 12, 15, 18, 20, 22, 25, 28, 30, 32, 35],
+                borderColor: "#667eea",
+                backgroundColor: "rgba(102, 126, 234, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointBackgroundColor: "#667eea",
+                pointHoverBackgroundColor: "#764ba2",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: true, position: "top" },
+            },
+            scales: {
+              y: { beginAtZero: true },
+            },
+          },
+        });
+      }
 
-            charts.doughnut = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Active Users', 'Inactive Users'],
-                    datasets: [{
-                        data: [data.totalUsers * 0.7, data.totalUsers * 0.3],
-                        backgroundColor: ['#4facfe', '#764ba2'],
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
-            });
-        }
+      // Doughnut Chart
+      function initDoughnutChart(data) {
+        const ctx = document.getElementById("doughnutChart").getContext("2d");
 
-        // Radar Chart - Performance Metrics
-        function initRadarChart() {
-            const ctx = document.getElementById('radarChart').getContext('2d');
+        hideLoading("doughnutChartLoading");
+        document.getElementById("doughnutChart").style.display = "block";
 
-            hideLoading('radarChartLoading');
-            document.getElementById('radarChart').style.display = 'block';
+        charts.doughnut = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Active Users", "Inactive Users"],
+            datasets: [
+              {
+                data: [data.totalUsers * 0.7, data.totalUsers * 0.3],
+                backgroundColor: ["#4facfe", "#764ba2"],
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom" },
+            },
+          },
+        });
+      }
 
-            charts.radar = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Engagement', 'Performance', 'Quality', 'Growth', 'Satisfaction'],
-                    datasets: [{
-                        label: 'Current Month',
-                        data: [85, 78, 92, 88, 95],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
-                        borderWidth: 2,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#667eea'
-                    }, {
-                        label: 'Previous Month',
-                        data: [72, 65, 80, 75, 85],
-                        borderColor: '#764ba2',
-                        backgroundColor: 'rgba(118, 75, 162, 0.2)',
-                        borderWidth: 2,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#764ba2'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    },
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 100
-                        }
-                    }
-                }
-            });
-        }
+      // Radar Chart - Performance Metrics
+      function initRadarChart() {
+        const ctx = document.getElementById("radarChart").getContext("2d");
 
-        function hideLoading(loadingId) {
-            document.getElementById(loadingId).style.display = 'none';
-        }
+        hideLoading("radarChartLoading");
+        document.getElementById("radarChart").style.display = "block";
+
+        charts.radar = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: [
+              "Engagement",
+              "Performance",
+              "Quality",
+              "Growth",
+              "Satisfaction",
+            ],
+            datasets: [
+              {
+                label: "Current Month",
+                data: [85, 78, 92, 88, 95],
+                borderColor: "#667eea",
+                backgroundColor: "rgba(102, 126, 234, 0.2)",
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: "#667eea",
+              },
+              {
+                label: "Previous Month",
+                data: [72, 65, 80, 75, 85],
+                borderColor: "#764ba2",
+                backgroundColor: "rgba(118, 75, 162, 0.2)",
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: "#764ba2",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom" },
+            },
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+              },
+            },
+          },
+        });
+      }
+
+      function hideLoading(loadingId) {
+        document.getElementById(loadingId).style.display = "none";
+      }
     </script>
-</body>
+  </body>
 </html>
