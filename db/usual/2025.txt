@@ -1,1 +1,8 @@
 202511131032 一块豆腐 2.7
+
+2025-1115 -1507
+Rank 1 — Weighted Combined Top: red: 19 14 03 13 01 18, blue: 16 — 90.26
+Rank 2 — Recent Heavy: red: 19 03 14 13 18 24, blue: 03 — 86.82
+Rank 3 — Balanced Mix: red: 14 06 22 09 19 03, blue: 15 — 84.72
+Rank 4 — Most Frequent: red: 14 06 22 09 02 17, blue: 16 — 81.56
+Rank 5 — Hot & Cold Mix: red: 14 06 22 21 28 29, blue: 01 — 75.05
