@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSQ Lottery Prediction</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 0;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+        
+        .analysis-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box h3 {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .stat-box .number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .prediction-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .prediction-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .prediction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .prediction-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .prediction-index {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .numbers-display {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .red-numbers {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .number-ball {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .red-ball {
+            background: linear-gradient(135deg, #ff6b6b, #ff4444);
+        }
+        
+        .blue-ball {
+            background: linear-gradient(135deg, #4169e1, #1e40af);
+        }
+        
+        .separator {
+            color: #ccc;
+            font-size: 20px;
+        }
+        
+        .frequency-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .frequency-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .frequency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .frequency-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid #667eea;
+        }
+        
+        .frequency-item-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .frequency-item-count {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            .prediction-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">LifeAssist</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/lottery">SSQ Prediction</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="header">
+            <h1>🎰 SSQ Lottery Prediction</h1>
+            <p>Based on analysis of 1937 historical lottery results</p>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-box">
+                    <h3>Historical Records</h3>
+                    <div class="number" id="totalRecords">0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-box">
+                    <h3>Red Numbers Analyzed</h3>
+                    <div class="number">1-33</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-box">
+                    <h3>Blue Numbers Analyzed</h3>
+                    <div class="number">1-16</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frequency Analysis Section -->
+        <div class="analysis-card">
+            <div class="frequency-title">🔴 Top Red Numbers (Most Frequent)</div>
+            <div class="frequency-grid" id="redFrequency"></div>
+        </div>
+
+        <div class="analysis-card">
+            <div class="frequency-title">🔵 Top Blue Numbers (Most Frequent)</div>
+            <div class="frequency-grid" id="blueFrequency"></div>
+        </div>
+
+        <!-- Predictions Section -->
+        <div class="analysis-card">
+            <div class="frequency-title">🎯 Next Group Predictions (Top 10 Possibilities)</div>
+            <div id="predictionsContainer"></div>
+        </div>
+    </div>
+
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load predictions from the API or static file
+        async function loadPredictions() {
+            try {
+                const response = await fetch('/api/v1/lottery-predictions');
+                const data = await response.json();
+                
+                // Update statistics
+                document.getElementById('totalRecords').textContent = data.totalHistoricalRecords;
+                
+                // Display red frequency
+                const redFreqHtml = Object.entries(data.redNumberAnalysis)
+                    .map(([num, count]) => `
+                        <div class="frequency-item">
+                            <div class="frequency-item-number">${num}</div>
+                            <div class="frequency-item-count">${count} times</div>
+                        </div>
+                    `).join('');
+                document.getElementById('redFrequency').innerHTML = redFreqHtml;
+                
+                // Display blue frequency
+                const blueFreqHtml = Object.entries(data.blueNumberAnalysis)
+                    .map(([num, count]) => `
+                        <div class="frequency-item">
+                            <div class="frequency-item-number">${num}</div>
+                            <div class="frequency-item-count">${count} times</div>
+                        </div>
+                    `).join('');
+                document.getElementById('blueFrequency').innerHTML = blueFreqHtml;
+                
+                // Display predictions
+                const predictionsHtml = data.predictions
+                    .map((pred, idx) => `
+                        <div class="prediction-item">
+                            <div class="prediction-header">
+                                <div class="prediction-title">${pred.strategy}</div>
+                                <span class="prediction-index">Group ${idx + 1}</span>
+                            </div>
+                            <div class="numbers-display">
+                                <div class="red-numbers">
+                                    ${pred.red.map(num => `
+                                        <div class="number-ball red-ball">${String(num).padStart(2, '0')}</div>
+                                    `).join('')}
+                                </div>
+                                <span class="separator">+</span>
+                                <div class="number-ball blue-ball">${String(pred.blue).padStart(2, '0')}</div>
+                                <button class="copy-btn" onclick="copyNumbers(${idx})">Copy</button>
+                            </div>
+                        </div>
+                    `).join('');
+                
+                document.getElementById('predictionsContainer').innerHTML = predictionsHtml;
+                
+            } catch (error) {
+                console.error('Error loading predictions:', error);
+                document.getElementById('predictionsContainer').innerHTML = 
+                    '<p class="alert alert-danger">Failed to load predictions</p>';
+            }
+        }
+        
+        function copyNumbers(index) {
+            const predictions = window.predictions;
+            if (predictions && predictions[index]) {
+                const pred = predictions[index];
+                const text = `Red: ${pred.red.join(', ')} Blue: ${pred.blue}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Copied to clipboard!');
+                });
+            }
+        }
+        
+        // Load predictions on page load
+        document.addEventListener('DOMContentLoaded', loadPredictions);
+    </script>
+</body>
+</html>

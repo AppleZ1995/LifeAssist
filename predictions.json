@@ -1,0 +1,151 @@
+{
+  "totalHistoricalRecords": 1937,
+  "dataRange": {
+    "latest": "2025-11-11(二)",
+    "oldest": "2023-11-19(日)"
+  },
+  "redNumberAnalysis": {
+    "1": 375,
+    "2": 377,
+    "6": 399,
+    "9": 381,
+    "10": 367,
+    "14": 399,
+    "17": 378,
+    "19": 373,
+    "22": 389,
+    "26": 369
+  },
+  "blueNumberAnalysis": {
+    "1": 137,
+    "4": 123,
+    "6": 126,
+    "7": 131,
+    "12": 128,
+    "14": 123,
+    "15": 135,
+    "16": 137
+  },
+  "predictions": [
+    {
+      "strategy": "Most Frequent",
+      "red": [
+        2,
+        6,
+        9,
+        14,
+        17,
+        22
+      ],
+      "blue": 1
+    },
+    {
+      "strategy": "Hot & Cold Mix",
+      "red": [
+        6,
+        7,
+        14,
+        18,
+        22,
+        32
+      ],
+      "blue": 16
+    },
+    {
+      "strategy": "Variation 1",
+      "red": [
+        2,
+        6,
+        9,
+        14,
+        17,
+        22
+      ],
+      "blue": 1
+    },
+    {
+      "strategy": "Variation 2",
+      "red": [
+        1,
+        2,
+        9,
+        14,
+        17,
+        22
+      ],
+      "blue": 16
+    },
+    {
+      "strategy": "Variation 3",
+      "red": [
+        1,
+        2,
+        9,
+        17,
+        19,
+        22
+      ],
+      "blue": 15
+    },
+    {
+      "strategy": "Variation 4",
+      "red": [
+        1,
+        2,
+        9,
+        17,
+        19,
+        26
+      ],
+      "blue": 7
+    },
+    {
+      "strategy": "Variation 5",
+      "red": [
+        1,
+        2,
+        10,
+        17,
+        19,
+        26
+      ],
+      "blue": 12
+    },
+    {
+      "strategy": "Variation 6",
+      "red": [
+        1,
+        2,
+        10,
+        19,
+        26,
+        27
+      ],
+      "blue": 6
+    },
+    {
+      "strategy": "Variation 7",
+      "red": [
+        1,
+        10,
+        19,
+        20,
+        26,
+        27
+      ],
+      "blue": 4
+    },
+    {
+      "strategy": "Variation 8",
+      "red": [
+        10,
+        18,
+        19,
+        20,
+        26,
+        27
+      ],
+      "blue": 14
+    }
+  ]
+}

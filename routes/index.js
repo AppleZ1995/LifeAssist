@@ -16,4 +16,9 @@ router.get('/dashboard', function(req, res, next) {
   res.render('dashboard');
 });
 
+/* GET lottery predictions page. */
+router.get('/lottery', function(req, res, next) {
+  res.render('lottery');
+});
+
 module.exports = router;
